@@ -1,0 +1,57 @@
+version: '2.1'
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:2.4
+    container_name: elasticsearch2.4
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    volumes:
+      - /opt/elk/data/esdata:/usr/share/elasticsearch/data
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana5
+    command: cfg:default.users.allow_sign_up=false
+    environment:
+      GF_INSTALL_PLUGINS: "grafana-worldmap-panel,grafana-piechart-panel"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      DEFAULT_THEME: "light"
+    ports:
+      - "3000:3000"
+    volumes:
+      - /opt/elk/data/gfdata:/var/lib/grafana
+
+  kafka:
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    container_name: kafka
+    environment:
+      HOSTNAME_COMMAND: curl http://169.254.169.254/latest/meta-data/public-hostname
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_CREATE_TOPICS: "topic1:1:1"
+    image: wurstmeister/kafka:0.10.2.1
+    ports:
+    - 9092:9092/tcp
+    volumes:
+    - /opt/kafka/kfdata:/var/lib/kafka
+
+  zookeeper:
+    container_name: zookeeper
+    healthcheck:
+      interval: 2s
+      retries: 50
+      test: echo ruok | nc localhost 2181
+      timeout: 5s
+    image: wurstmeister/zookeeper
+    ports:
+    - 2181:2181/tcp
+    volumes:
+    - /opt/kafka/zkdata:/var/lib/zookeeper/data
