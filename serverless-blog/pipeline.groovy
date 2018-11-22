@@ -35,7 +35,7 @@ node {
                             // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
                             // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
                             mavenSettingsConfig: 'maven-file',
-                            mavenOpts: '-Dproduct.path=/cmdline -DgenerationType=local -DaltDeploymentRepository=snapshots::default::http://nexus:8081/repository/snapshots/ -Xms1024m -Xmx3096m') 
+                            mavenOpts: '-Dproduct.path=/cmdline -Dgeneration.type=local -DaltDeploymentRepository=snapshots::default::http://nexus:8081/repository/snapshots/ -Xms1024m -Xmx3096m') 
                             {
                     
                         // Run the maven build
