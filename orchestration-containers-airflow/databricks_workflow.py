@@ -108,7 +108,7 @@ create_cluster = PythonOperator(
 create_cluster_notify = SlackAPIPostOperator(
     task_id='create_cluster_notify',
     username  = 'Airflow',
-    token='xoxp-2953391458-240323533415-487123270576-d2bb3db1dc0b0e9802c07645e8c98d0b',
+    token='XXX',
     channel='#databricks_jobs',
     text=":databricks: Databricks Cluster Created with ID: {{ task_instance.xcom_pull(task_ids='create_databricks_cluster') }}",
     dag=dag
