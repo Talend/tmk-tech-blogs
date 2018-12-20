@@ -52,7 +52,7 @@ node {
                     mavenSettingsConfig: 'maven-file',
                     mavenOpts: "-Dgeneration.type=local -Dproduct.path=/cmdline -Ddocker.push.registry=registry.hub.docker.com/${env.Dusername} -Ddocker.push.username=${env.Dusername} -Ddocker.push.password=${env.Dpassword} -Xms1024m -Xmx3096m") {
                 
-                   sh "mvn -f $PROJECT_GIT_NAME/poms/pom.xml -Pdocker deploy -e -pl jobs/process${jobtobuild} -am -Dtalend.docker.name=${env.IMAGE_NAME}"
+                   sh "mvn -f $PROJECT_GIT_NAME/poms/pom.xml -Pdocker deploy -e -pl jobs/process${TYPE}/${JOB}_${VERSION} -am -Dtalend.docker.name=${env.IMAGE_NAME}"
                 }
             }
             sleep(5)
