@@ -55,7 +55,6 @@ node {
                    sh "mvn -f $PROJECT_GIT_NAME/poms/pom.xml -Pdocker deploy -e -pl jobs/process${TYPE}/${JOB}_${VERSION} -am -Dtalend.docker.name=${env.IMAGE_NAME}"
                 }
             }
-            sleep(5)
         }
         stage ('Deployment environment ?') {
           userInput = input(id: 'userInput',    
