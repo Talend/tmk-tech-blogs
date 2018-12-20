@@ -46,7 +46,7 @@ node {
         }
         stage ('Build Job and Publish Docker Image') {
 
-            withCredentials([usernamePassword(credentialsId: 'DockerRegistry', usernameVariable: 'Dusername', passwordVariable: 'Dpassword')]) {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'Dusername', passwordVariable: 'Dpassword')]) {
                 withMaven(
                     maven: 'M3', 
                     mavenSettingsConfig: 'maven-file',
