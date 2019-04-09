@@ -1,0 +1,44 @@
+# Basic Azure Pipeline for building job and push to Azure ACR
+
+trigger:
+- master
+
+variables:
+  project_name: YOUR_PROJECT_NAME
+  job_name: yourjobname 
+  job_version: 0.1 
+  commandline_path: /home/tgourdel/commandline # CHANGE WITH YOUR OWN PATH
+  docker_registry: tgourdel.azurecr.io # CHANGE WITH YOUR OWN REGISTRY URL
+  docker_username: tgourdel # CHANGE WITH YOUR OWN USERNAME
+  JAVA_HOME_8_X64: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64
+  docker_image_name: yourdockerimagename 
+
+jobs:
+
+- job: checkout
+  pool: 'Talend CommandLine' # ADAPT IF YOU HAVE A AGENT POOL NAME
+  displayName: 'Git Checkout'
+  continueOnError: false
+  steps:
+  - checkout: self
+    clean: true
+
+- job: build
+  pool: 'Talend CommandLine'
+  dependsOn: checkout
+  displayName: 'Job Build & Publish to ACR'
+  continueOnError: false
+  steps:
+  - task: Maven@3
+    inputs:
+      mavenPomFile: '$(project_name)/poms/pom.xml' 
+      goals: 'deploy'
+      options: '--settings $(commandline_path)/configuration/maven_user_settings.xml -U -DaltDeploymentRepository=release::default::http://localhost:8081/repository/release -Pdocker -e -pl jobs/process_mr/$(job_name)_$(job_version) -am -Dtalend.docker.name=$(docker_image_name)'
+      publishJUnitResults: false 
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkDirectory: '/usr/bin/java'
+      mavenVersionOption: path
+      mavenDirectory: '/usr/local/src/apache-maven'
+      mavenOptions: '-Dgeneration.type=local -Dproduct.path=$(commandline_path) -Ddocker.push.registry=$(docker_registry) -Ddocker.push.username=$(docker_username) -Ddocker.push.password=$(docker_password) -Xmx3096m -Xmx1024m'
+      sonarQubeRunAnalysis: false 
