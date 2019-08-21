@@ -8,8 +8,8 @@ output = input
 R = 6373.0
 lat1 = radians(49.00838)
 lon1 = radians(2.538441)
-lat2 = radians(abs(input['Lat']))
-lon2 = radians(abs(input['Long']))
+lat2 = radians(abs(input['LAT']))
+lon2 = radians(abs(input['LONG']))
 dlon = lon2 - lon1
 dlat = lat2 - lat1
 
