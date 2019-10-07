@@ -2,6 +2,7 @@
 # Build Pipeline for building and publishing on Talend Cloud
 
 trigger: none
+
 pool:
  vmImage: 'ubuntu-latest'
 
@@ -30,7 +31,7 @@ steps:
         mavenPomFile: '$(project_name)/poms/pom.xml' 
         mavenOptions: |
           -Dlicense.path=$(license.secureFilePath)
-          -Dupdatesite.path=$(updatesite_path)
+          -Dupdatesite.path=$(UPDATESITE_PATH)
           -Dservice.url=$(CLOUD_URL)
           -Dcloud.publisher.screenshot=true
           -Xmx3096m -Xmx1024m
