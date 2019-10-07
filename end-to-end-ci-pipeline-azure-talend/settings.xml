@@ -44,31 +44,31 @@
                 <repository>
                     <id>talend-custom-libs-release</id>
                     <name>talend-custom-libs-release</name>
-                    <url>${NEXUS}/repository/talend-custom-libs-release/</url>
+                    <url>${NEXUS_URL}/repository/talend-custom-libs-release/</url>
                     <layout>default</layout>
                 </repository>
                 <repository>
                     <id>talend-custom-libs-snapshot</id>
                     <name>talend-custom-libs-snapshot</name>
-                    <url>${NEXUS}/repository/talend-custom-libs-snapshot/</url>
+                    <url>${NEXUS_URL}/repository/talend-custom-libs-snapshot/</url>
                     <layout>default</layout>
                 </repository>
 				<repository>
                     <id>central</id>
                     <name>central</name>
-                    <url>${NEXUS}/repository/maven-central/</url>
+                    <url>${NEXUS_URL}/repository/maven-central/</url>
                     <layout>default</layout>
                 </repository>
 				<repository>
                     <id>talend-releases</id>
                     <name>talend-releases</name>
-                    <url>${NEXUS}/repository/talend-releases/</url>
+                    <url>${NEXUS_URL}/repository/talend-releases/</url>
                     <layout>default</layout>
                 </repository>
 				<repository>
                     <id>talend-snapshots</id>
                     <name>talend-snapshots</name>
-                    <url>${NEXUS}/repository/talend-snapshots/</url>
+                    <url>${NEXUS_URL}/repository/talend-snapshots/</url>
                     <layout>default</layout>
                 </repository>
             </repositories>
@@ -76,19 +76,19 @@
                 <pluginRepository>
                     <id>plugins_snapshot</id>
                     <name>plugins_snapshot</name>
-                    <url>${NEXUS}/repository/talend-custom-libs-snapshot/</url>
+                    <url>${NEXUS_URL}/repository/talend-custom-libs-snapshot/</url>
                     <layout>default</layout>
                 </pluginRepository>
                 <pluginRepository>
                     <id>plugins_release</id>
                     <name>plugins_release</name>
-                    <url>${NEXUS}/repository/talend-custom-libs-release/</url>
+                    <url>${NEXUS_URL}/repository/talend-custom-libs-release/</url>
                     <layout>default</layout>
                 </pluginRepository>
 				<pluginRepository>
                     <id>central</id>
                     <name>central</name>
-                    <url>${NEXUS}/repository/maven-central/</url>
+                    <url>${NEXUS_URL}/repository/maven-central/</url>
                     <layout>default</layout>
                 </pluginRepository>
             </pluginRepositories>
