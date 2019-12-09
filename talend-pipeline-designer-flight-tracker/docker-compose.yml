@@ -1,21 +1,30 @@
 version: '2.1'
 
+networks:
+  default:
+
+volumes:
+  kafka:
+  zookeeper:
+  elasticsearch:
+  grafana:
+
 services:
 
   elasticsearch:
-    image: elasticsearch:2.4
-    container_name: elasticsearch2.4
+    container_name: elasticsearch651
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     volumes:
-      - /opt/elk/data/esdata:/usr/share/elasticsearch/data
+      - elasticsearch:/usr/share/elasticsearch/data
 
   grafana:
     image: grafana/grafana
-    container_name: grafana5
+    container_name: grafana
     command: cfg:default.users.allow_sign_up=false
     environment:
       GF_INSTALL_PLUGINS: "grafana-worldmap-panel,grafana-piechart-panel"
@@ -24,24 +33,30 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - /opt/elk/data/gfdata:/var/lib/grafana
+      - grafana:/var/lib/grafana
 
   kafka:
     depends_on:
       zookeeper:
         condition: service_healthy
     container_name: kafka
+    hostname: kafka
     environment:
       HOSTNAME_COMMAND: curl http://169.254.169.254/latest/meta-data/public-hostname
-      KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://_{HOSTNAME_COMMAND}:9092,OUTSIDE://_{HOSTNAME_COMMAND}:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_CREATE_TOPICS: "topic1:1:1"
-    image: wurstmeister/kafka:0.10.2.1
+      KAFKA_LOG_RETENTION_HOURS: 1
+    image: wurstmeister/kafka:2.11-0.10.2.2
     ports:
     - 9092:9092/tcp
+    - 9094:9094/tcp
     volumes:
-    - /opt/kafka/kfdata:/var/lib/kafka
+    - kafka:/var/lib/kafka
 
   zookeeper:
     container_name: zookeeper
@@ -50,8 +65,8 @@ services:
       retries: 50
       test: echo ruok | nc localhost 2181
       timeout: 5s
-    image: wurstmeister/zookeeper
+    image: wurstmeister/zookeeper:3.4.6
     ports:
     - 2181:2181/tcp
     volumes:
-    - /opt/kafka/zkdata:/var/lib/zookeeper/data
+    - zookeeper:/var/lib/zookeeper/data
