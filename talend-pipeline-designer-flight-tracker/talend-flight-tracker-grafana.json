@@ -14,37 +14,37 @@
       "type": "datasource",
       "id": "elasticsearch",
       "name": "Elasticsearch",
-      "version": "5.0.0"
+      "version": "1.0.0"
     },
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.1.3"
+      "version": "6.3.6"
     },
     {
       "type": "panel",
       "id": "grafana-worldmap-panel",
       "name": "Worldmap Panel",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "type": "panel",
       "id": "graph",
       "name": "Graph",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "panel",
       "id": "singlestat",
       "name": "Singlestat",
-      "version": "5.0.0"
+      "version": ""
     },
     {
       "type": "panel",
       "id": "table",
       "name": "Table",
-      "version": "5.0.0"
+      "version": ""
     }
   ],
   "annotations": {
@@ -64,7 +64,6 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1555596295534,
   "links": [],
   "panels": [
     {
@@ -79,6 +78,7 @@
       },
       "id": 6,
       "links": [],
+      "options": {},
       "pageSize": null,
       "scroll": true,
       "showHeader": true,
@@ -112,7 +112,7 @@
         {
           "bucketAggs": [
             {
-              "field": "airlines",
+              "field": "country",
               "id": "2",
               "settings": {
                 "min_doc_count": 1,
@@ -123,6 +123,7 @@
               "type": "terms"
             }
           ],
+          "hide": false,
           "metrics": [
             {
               "field": "id",
@@ -132,12 +133,12 @@
               "type": "cardinality"
             }
           ],
-          "query": "airlines:$airline",
+          "query": "",
           "refId": "A",
           "timeField": "date"
         }
       ],
-      "title": "Top Airlines",
+      "title": "Top Origin Countries",
       "transform": "table",
       "type": "table"
     },
@@ -163,15 +164,16 @@
       "hideTimeOverride": false,
       "hideZero": false,
       "id": 2,
-      "initialZoom": "9",
+      "initialZoom": "8",
       "links": [],
       "locationData": "geohash",
-      "mapCenter": "custom",
-      "mapCenterLatitude": "48.864716",
-      "mapCenterLongitude": "2.349014",
+      "mapCenter": "Last GeoHash",
+      "mapCenterLatitude": 48.98735046386719,
+      "mapCenterLongitude": 2.4080657958984375,
       "maxDataPoints": 1,
-      "minSpan": 2,
+      "maxPerRow": 12,
       "mouseWheelZoom": false,
+      "options": {},
       "repeat": null,
       "repeatDirection": "h",
       "showLegend": true,
@@ -207,6 +209,7 @@
               "type": "geohash_grid"
             }
           ],
+          "hide": false,
           "metrics": [
             {
               "field": "id",
@@ -216,7 +219,7 @@
               "type": "count"
             }
           ],
-          "query": "airlines:$airline && id:$aircraft",
+          "query": "",
           "refId": "A",
           "timeField": "date"
         }
@@ -270,6 +273,7 @@
       "maxDataPoints": 100,
       "nullPointMode": "connected",
       "nullText": null,
+      "options": {},
       "postfix": "",
       "postfixFontSize": "50%",
       "prefix": "",
@@ -303,6 +307,7 @@
               "type": "date_histogram"
             }
           ],
+          "hide": false,
           "metrics": [
             {
               "field": "id",
@@ -312,14 +317,13 @@
               "type": "cardinality"
             }
           ],
-          "query": "airlines:$airline && id:$aircraft",
+          "query": "",
           "refId": "A",
           "timeField": "date"
         }
       ],
       "thresholds": "",
       "title": "Aircrafts Count",
-      "transparent": false,
       "type": "singlestat",
       "valueFontSize": "100%",
       "valueMaps": [
@@ -338,6 +342,7 @@
       "dashes": false,
       "datasource": "${DS_ELASTICSEARCH_AIRCRAFTS}",
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 20,
@@ -358,6 +363,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
       "percentage": false,
       "pointradius": 5,
       "points": true,
@@ -380,6 +388,7 @@
               "type": "date_histogram"
             }
           ],
+          "hide": false,
           "metrics": [
             {
               "field": "select field",
@@ -387,13 +396,14 @@
               "type": "count"
             }
           ],
-          "query": "airlines:$airline and id:$aircraft",
+          "query": "",
           "refId": "A",
           "timeField": "date"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Aircraft Signals",
       "tooltip": {
@@ -434,52 +444,11 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 16,
+  "schemaVersion": 19,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_ELASTICSEARCH_AIRCRAFTS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Airline",
-        "multi": true,
-        "name": "airline",
-        "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"airlines\", \"query\": \"\"}",
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_ELASTICSEARCH_AIRCRAFTS}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Aircraft",
-        "multi": true,
-        "name": "aircraft",
-        "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"id\", \"query\": \"airlines:$airline\"}",
-        "refresh": 2,
-        "regex": "",
-        "sort": 3,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-5m",
@@ -511,7 +480,7 @@
     ]
   },
   "timezone": "",
-  "title": "Flights Tracker Paris",
+  "title": "Flight Tracker Monitoring",
   "uid": "xqIA3ARik",
-  "version": 6
+  "version": 1
 }
